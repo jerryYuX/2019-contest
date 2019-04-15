@@ -18,8 +18,13 @@
                 <el-button @click="change_difficult(3)" type="danger" size="mini">困难</el-button></span>
             </div>
             <div>
-                <el-button @click="change_difficult(2)" type="warning" size="mini">中等</el-button>
-                <el-button @click="change_difficult(3)" type="danger" size="mini">困难</el-button></span>
+
+                <el-button @click="up(people_loc)" type="" size="mini">上</el-button><br/>
+
+                <el-button @click="left(people_loc)" type="" size="mini">左</el-button>
+                <el-button @click="down(people_loc)" type="" size="mini">下</el-button>
+                <el-button @click="right(people_loc)" type="" size="mini">右</el-button>
+
             </div>
             <div>
                 <span>当前难度：{{diffc}}</span>
