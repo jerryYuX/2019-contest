@@ -3,29 +3,42 @@
         <div class="main_box">
 
 
-
-
         </div>
-        <span>游戏状态：{{state}}</span><br/>
-        <button @click="next_game" v-if="chapter == 1">下一关</button>
-        <button @click="last_game" v-if="chapter == 2">上一关</button>
-        <br/>
-        <span>难度选择：<button @click="change_difficult(1)" >简单</button>
-        <button @click="change_difficult(2)" >中等</button>
-        <button @click="change_difficult(3)" >困难</button></span>
-        <br />
-        <span>当前难度：{{diffc}}</span>
-        <br/>
-        <span>当前步数：{{steps}}</span>
-        <span>限制步数：{{limit_steps}}</span>
+        <div class="info">
+            <div>
+                <span>游戏状态：{{state}}</span><br/>
+            </div>
+            <div>
+                <el-button @click="next_game" v-if="chapter == 1" type="primary" plain size="mini">下一关</el-button>
+                <el-button @click="last_game" v-if="chapter == 2" type="primary" plain size="mini">上一关</el-button>
+            </div>
+            <div>
+                <span>难度选择：<el-button @click="change_difficult(1)" type="success" size="mini">简单</el-button>
+                <el-button @click="change_difficult(2)" type="warning" size="mini">中等</el-button>
+                <el-button @click="change_difficult(3)" type="danger" size="mini">困难</el-button></span>
+            </div>
+            <div>
+                <el-button @click="change_difficult(2)" type="warning" size="mini">中等</el-button>
+                <el-button @click="change_difficult(3)" type="danger" size="mini">困难</el-button></span>
+            </div>
+            <div>
+                <span>当前难度：{{diffc}}</span>
+                <br/>
+                <span>当前步数：{{steps}}</span>
+                <br/>
+                <span>限制步数：{{limit_steps}}</span>
+            </div>
+        </div>
+
+
+
+
 
     </div>
 
 </template>
 
 <script>
-    // @ is an alias to /src
-    // import HelloWorld from '@/components/HelloWorld.vue'
 
 
     export default {
@@ -45,7 +58,7 @@
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 ],
-                gameArr1:[
+                gameArr1: [
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 3, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
@@ -57,7 +70,7 @@
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 ],
-                gameArr2:[
+                gameArr2: [
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     [0, 4, 4, 4, 4, 4, 4, 4, 4, 0],
                     [0, 4, 3, 0, 4, 2, 4, 4, 4, 0],
@@ -73,60 +86,57 @@
                 people: 1,
                 box: 2,
                 aim: 3,
-                blank:4,
-                people_loc:{
-                    x:4,
-                    y:4
+                blank: 4,
+                people_loc: {
+                    x: 4,
+                    y: 4
                 },
-                state:'进行中',
-                chapter:1,
+                state: '进行中',
+                chapter: 1,
                 steps: 0,
-                limit_steps:40,
-                diffc:'简单'
+                limit_steps: 40,
+                diffc: '简单'
             }
         },
-        methods:{
-            up(node){
+        methods: {
+            up(node) {
                 this.steps++;
-                if(this.gameArr[node.x-1][node.y] == 4){
-                    this.gameArr[node.x-1][node.y] = 1;
+                if (this.gameArr[node.x - 1][node.y] == 4) {
+                    this.gameArr[node.x - 1][node.y] = 1;
                     this.gameArr[node.x][node.y] = 4;
                     this.people_loc.x = this.people_loc.x - 1;
 
 
-                }else
-                if(this.gameArr[node.x-1][node.y] == 3){
+                } else if (this.gameArr[node.x - 1][node.y] == 3) {
 
-                }else
-                if(this.gameArr[node.x-1][node.y] == 2){
-                    if(this.gameArr[node.x-2][node.y] == 4||this.gameArr[node.x-2][node.y] == 3){
-                        this.gameArr[node.x-2][node.y] = 2;
-                        this.gameArr[node.x-1][node.y] = 1;
+                } else if (this.gameArr[node.x - 1][node.y] == 2) {
+                    if (this.gameArr[node.x - 2][node.y] == 4 || this.gameArr[node.x - 2][node.y] == 3) {
+                        this.gameArr[node.x - 2][node.y] = 2;
+                        this.gameArr[node.x - 1][node.y] = 1;
                         this.gameArr[node.x][node.y] = 4;
                         this.people_loc.x = this.people_loc.x - 1;
 
                     }
 
-                }else
-                if(this.gameArr[node.x-1][node.y] == 0){
+                } else if (this.gameArr[node.x - 1][node.y] == 0) {
 
                 }
-                if(this.isFail()){
+                if (this.isFail()) {
                     this.$message.error('失败！');
                     this.init();
                 }
 
-                if(this.isSuccess()){
+                if (this.isSuccess()) {
                     this.$message({
                         message: '成功通过当前关卡',
                         type: 'success'
                     });
-                    if(this.chapter == 2){
+                    if (this.chapter == 2) {
                         this.$message({
-                            message:'后续关卡待添加！'
+                            message: '后续关卡待添加！'
                         })
                         this.init();
-                    }else{
+                    } else {
                         this.next_game();
                     }
                 }
@@ -134,67 +144,62 @@
 
 
             },
-            down(node){
+            down(node) {
                 this.steps++;
-                if(this.gameArr[node.x+1][node.y] == 4){
-                    this.gameArr[node.x+1][node.y] = 1;
+                if (this.gameArr[node.x + 1][node.y] == 4) {
+                    this.gameArr[node.x + 1][node.y] = 1;
                     this.gameArr[node.x][node.y] = 4;
                     this.people_loc.x = this.people_loc.x + 1;
 
 
-                }else
-                if(this.gameArr[node.x+1][node.y] == 3){
+                } else if (this.gameArr[node.x + 1][node.y] == 3) {
 
-                }else
-                if(this.gameArr[node.x+1][node.y] == 2){
-                    if(this.gameArr[node.x+2][node.y] == 4||this.gameArr[node.x+2][node.y] == 3){
-                        this.gameArr[node.x+2][node.y] = 2;
-                        this.gameArr[node.x+1][node.y] = 1;
+                } else if (this.gameArr[node.x + 1][node.y] == 2) {
+                    if (this.gameArr[node.x + 2][node.y] == 4 || this.gameArr[node.x + 2][node.y] == 3) {
+                        this.gameArr[node.x + 2][node.y] = 2;
+                        this.gameArr[node.x + 1][node.y] = 1;
                         this.gameArr[node.x][node.y] = 4;
                         this.people_loc.x = this.people_loc.x + 1;
 
                     }
 
-                }else
-                if(this.gameArr[node.x+1][node.y] == 0){
+                } else if (this.gameArr[node.x + 1][node.y] == 0) {
 
                 }
-                if(this.isFail()){
+                if (this.isFail()) {
                     this.$message.error('失败！')
                     this.init();
                 }
 
-                if(this.isSuccess()){
+                if (this.isSuccess()) {
                     this.$message({
                         message: '成功通过当前关卡',
                         type: 'success'
                     });
-                    if(this.chapter == 2){
+                    if (this.chapter == 2) {
                         this.$message({
-                            message:'后续关卡待添加！'
+                            message: '后续关卡待添加！'
                         })
                         this.init();
-                    }else{
+                    } else {
                         this.next_game();
                     }
                 }
                 this.draw(this.gameArr);
 
             },
-            left(node){
+            left(node) {
                 this.steps++;
-                if(this.gameArr[node.x][node.y-1] == 4){
-                    this.gameArr[node.x][node.y-1] = 1;
+                if (this.gameArr[node.x][node.y - 1] == 4) {
+                    this.gameArr[node.x][node.y - 1] = 1;
                     this.gameArr[node.x][node.y] = 4;
                     this.people_loc.y = this.people_loc.y - 1;
 
 
-                }else
-                if(this.gameArr[node.x][node.y-1] == 3){
+                } else if (this.gameArr[node.x][node.y - 1] == 3) {
 
-                }else
-                if(this.gameArr[node.x][node.y-1] == 2){
-                    if(this.gameArr[node.x][node.y -2] == 4||this.gameArr[node.x][node.y - 2] == 3){
+                } else if (this.gameArr[node.x][node.y - 1] == 2) {
+                    if (this.gameArr[node.x][node.y - 2] == 4 || this.gameArr[node.x][node.y - 2] == 3) {
                         this.gameArr[node.x][node.y - 2] = 2;
                         this.gameArr[node.x][node.y - 1] = 1;
                         this.gameArr[node.x][node.y] = 4;
@@ -202,46 +207,43 @@
 
                     }
 
-                }else
-                if(this.gameArr[node.x][node.y-1] == 0){
+                } else if (this.gameArr[node.x][node.y - 1] == 0) {
 
                 }
-                if(this.isFail()){
+                if (this.isFail()) {
                     this.$message.error('失败！')
                     this.init();
                 }
 
-                if(this.isSuccess()){
+                if (this.isSuccess()) {
                     this.$message({
                         message: '成功通过当前关卡',
                         type: 'success'
                     });
-                    if(this.chapter == 2){
+                    if (this.chapter == 2) {
                         this.$message({
-                            message:'后续关卡待添加！'
+                            message: '后续关卡待添加！'
                         })
                         this.init();
-                    }else{
+                    } else {
                         this.next_game();
                     }
                 }
                 this.draw(this.gameArr);
 
             },
-            right(node){
+            right(node) {
                 this.steps++;
-                if(this.gameArr[node.x][node.y+1] == 4){
-                    this.gameArr[node.x][node.y+1] = 1;
+                if (this.gameArr[node.x][node.y + 1] == 4) {
+                    this.gameArr[node.x][node.y + 1] = 1;
                     this.gameArr[node.x][node.y] = 4;
                     this.people_loc.y = this.people_loc.y + 1;
 
 
-                }else
-                if(this.gameArr[node.x][node.y+1] == 3){
+                } else if (this.gameArr[node.x][node.y + 1] == 3) {
 
-                }else
-                if(this.gameArr[node.x][node.y+1] == 2){
-                    if(this.gameArr[node.x][node.y +2] == 4||this.gameArr[node.x][node.y + 2] == 3){
+                } else if (this.gameArr[node.x][node.y + 1] == 2) {
+                    if (this.gameArr[node.x][node.y + 2] == 4 || this.gameArr[node.x][node.y + 2] == 3) {
                         this.gameArr[node.x][node.y + 2] = 2;
                         this.gameArr[node.x][node.y + 1] = 1;
                         this.gameArr[node.x][node.y] = 4;
@@ -249,26 +251,25 @@
 
                     }
 
-                }else
-                if(this.gameArr[node.x][node.y+1] == 0){
+                } else if (this.gameArr[node.x][node.y + 1] == 0) {
 
                 }
-                if(this.isFail()){
+                if (this.isFail()) {
                     this.$message.error('失败！')
                     this.init();
                 }
 
-                if(this.isSuccess()){
+                if (this.isSuccess()) {
                     this.$message({
                         message: '成功通过当前关卡',
                         type: 'success'
                     });
-                    if(this.chapter == 2){
+                    if (this.chapter == 2) {
                         this.$message({
-                            message:'后续关卡待添加！'
+                            message: '后续关卡待添加！'
                         })
                         this.init();
-                    }else{
+                    } else {
                         this.next_game();
                     }
 
@@ -276,41 +277,41 @@
                 this.draw(this.gameArr);
 
             },
-            isSuccess(){
+            isSuccess() {
 
-                for(let i = 0;i<this.gameArr.length;i++){
-                    if(this.gameArr[i].indexOf(3) != -1){
+                for (let i = 0; i < this.gameArr.length; i++) {
+                    if (this.gameArr[i].indexOf(3) != -1) {
                         return false
                     }
                 }
                 return true;
             },
-            isFail(){
-                if(this.steps > this.limit_steps){
+            isFail() {
+                if (this.steps > this.limit_steps) {
                     return true;
                 }
             },
-            creat_el(name){
+            creat_el(name) {
                 var div = document.createElement('div');
                 div.className = name;
                 return div;
 
             },
 
-            draw(arr){
+            draw(arr) {
                 document.querySelector('.main_box').innerHTML = null;
-                for(let i = 0;i<arr.length;i++){
+                for (let i = 0; i < arr.length; i++) {
                     document.querySelector('.main_box').append(this.creat_el('span'));
-                    for(let j = 0;j<arr[i].length;j++){
-                        if(arr[i][j] ==0){
+                    for (let j = 0; j < arr[i].length; j++) {
+                        if (arr[i][j] == 0) {
                             document.querySelectorAll('.span')[i].append(this.creat_el('wall'));
-                        }else if(arr[i][j] ==1){
+                        } else if (arr[i][j] == 1) {
                             document.querySelectorAll('.span')[i].append(this.creat_el('people'));
-                        }else if(arr[i][j] ==2){
+                        } else if (arr[i][j] == 2) {
                             document.querySelectorAll('.span')[i].append(this.creat_el('box'));
-                        }else if(arr[i][j] ==3){
+                        } else if (arr[i][j] == 3) {
                             document.querySelectorAll('.span')[i].append(this.creat_el('aim'));
-                        }else if(arr[i][j] ==4){
+                        } else if (arr[i][j] == 4) {
                             document.querySelectorAll('.span')[i].append(this.creat_el('blank'));
                         }
 
@@ -318,11 +319,11 @@
                     }
                 }
             },
-            next_game(){
+            next_game() {
 
-                this.people_loc={
-                    x:4,
-                    y:4
+                this.people_loc = {
+                    x: 4,
+                    y: 4
                 }
                 this.steps = 0;
                 console.log(this.gameArr);
@@ -333,50 +334,50 @@
                 })
 
 
-                this.chapter =2;
+                this.chapter = 2;
 
 
             },
-            last_game(){
+            last_game() {
                 this.steps = 0;
                 this.gameArr = this.gameArr1.concat();
                 this.state = '进行中'
                 this.$nextTick(function () {
                     this.draw(this.gameArr);
                 })
-                this.people_loc={
-                    x:4,
-                    y:4
+                this.people_loc = {
+                    x: 4,
+                    y: 4
                 }
-                this.chapter =1;
+                this.chapter = 1;
 
 
             },
-            init(){
+            init() {
                 this.steps = 0;
                 this.gameArr = this.gameArr1.concat();
                 this.state = '进行中'
                 this.$nextTick(function () {
                     this.draw(this.gameArr);
                 })
-                this.people_loc={
-                    x:4,
-                    y:4
+                this.people_loc = {
+                    x: 4,
+                    y: 4
                 }
-                this.chapter =1;
-                this.$router.go(0);
+                this.chapter = 1;
+                this.$router.push({path:'/about'});
             },
-            change_difficult(num){
-                if(num == 1){
+            change_difficult(num) {
+                if (num == 1) {
                     this.diffc = '简单';
                     this.limit_steps = 40;
                 }
-                if(num == 2){
+                if (num == 2) {
                     this.diffc = '中等';
                     this.limit_steps = 25;
 
                 }
-                if(num == 3){
+                if (num == 3) {
                     this.diffc = '困难';
                     this.limit_steps = 15;
 
@@ -394,13 +395,17 @@
                 // alert(keyNum);
                 let num = Number(keyNum);
                 switch (num) {
-                    case 37: that.left(that.people_loc);
+                    case 37:
+                        that.left(that.people_loc);
                         break;
-                    case 38: that.up(that.people_loc);
+                    case 38:
+                        that.up(that.people_loc);
                         break;
-                    case 39:   that.right(that.people_loc);
+                    case 39:
+                        that.right(that.people_loc);
                         break;
-                    case 40: that.down(that.people_loc);
+                    case 40:
+                        that.down(that.people_loc);
                         break;
 
                 }
@@ -411,47 +416,57 @@
     }
 </script>
 <style>
-    .main_box{
+    .main_box {
         width: 200px;
         height: 200px;
         padding: 0;
         margin: 0 auto;
     }
-    .span{
+    .info div{
+        margin: 10px 0 10px 0;
+    }
+
+    .span {
         width: 200px;
         height: 20px;
         padding: 0;
         margin: 0;
     }
-    .span div{
+
+    .span div {
         width: 20px;
         height: 20px;
         margin: 0;
         padding: 0;
         float: left;
     }
-    .wall{
+
+    .wall {
         background-color: #2c3e50;
         background-image: url("../assets/wall.png");
         background-size: 100%;
 
     }
-    .people{
+
+    .people {
         background-color: antiquewhite;
         background-image: url("../assets/people.png");
         background-size: 100%;
     }
-    .box{
+
+    .box {
         background-color: burlywood;
         background-image: url("../assets/box.png");
         background-size: 100%;
     }
-    .aim{
+
+    .aim {
         background-color: #42b983;
         background-image: url("../assets/aim.png");
         background-size: 100%;
     }
-    .blank{
+
+    .blank {
         background-color: aliceblue;
         background-image: url("../assets/blank.png");
     }
